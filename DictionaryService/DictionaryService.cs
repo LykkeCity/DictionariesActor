@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Domain.Assets;
-using Core.Domain.Assets.Models;
-using Core.Domain.Dictionary;
 using DictionaryService.DataAccess.Asset;
+using Lykke.Core.Domain.Assets;
+using Lykke.Core.Domain.Assets.Models;
+using Lykke.Core.Domain.Dictionary;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
 namespace DictionaryService

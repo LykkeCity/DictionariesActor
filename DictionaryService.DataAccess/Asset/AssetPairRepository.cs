@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Domain.Assets;
-using Core.Domain.Assets.Models;
+using Lykke.Core.Domain.Assets;
+using Lykke.Core.Domain.Assets.Models;
 
 namespace DictionaryService.DataAccess.Asset
 {
