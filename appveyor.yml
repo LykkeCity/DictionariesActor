@@ -1,0 +1,17 @@
+version: 1.0.{build}
+configuration: Release
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+install:
+- Webpicmd /install /products:"MicrosoftAzure-ServiceFabric" /AcceptEULA
+before_build:
+- ps: nuget restore $env:APPVEYOR_BUILD_FOLDER\DictionaryApp.sln
+build:
+  project: DictionaryApp.sln
+  verbosity: minimal
+deploy_script:
+- ps: Connect-ServiceFabricCluster
