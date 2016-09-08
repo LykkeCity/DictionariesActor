@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using DictionaryService.DataAccess.Asset;
+using DictionaryService.DataAccess.Country;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
 namespace DictionaryService
@@ -11,7 +13,11 @@ namespace DictionaryService
             try
             {
                 ActorRuntime.RegisterActorAsync<DictionaryService>(
-                   (context, actorType) => new ActorService(context, actorType, () => new DictionaryService())).GetAwaiter().GetResult();
+                        (context, actorType) =>
+                            new ActorService(context, actorType,
+                                () => new DictionaryService(new AssetPairRepository(), new CountryRepository())))
+                    .GetAwaiter()
+                    .GetResult();
 
                 Thread.Sleep(Timeout.Infinite);
             }

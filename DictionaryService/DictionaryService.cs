@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DictionaryService.DataAccess.Asset;
 using Lykke.Core.Domain.Assets;
 using Lykke.Core.Domain.Assets.Models;
+using Lykke.Core.Domain.Country;
+using Lykke.Core.Domain.Country.Models;
 using Lykke.Core.Domain.Dictionary;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
@@ -12,10 +13,22 @@ namespace DictionaryService
     internal class DictionaryService : Actor, IDictionaryService
     {
         private readonly IAssetPairRepository _assetPairRepository;
+        private readonly ICountryRepository _countryRepository;
 
-        public DictionaryService()
+        public DictionaryService(IAssetPairRepository assetPairRepository, ICountryRepository countryRepository)
         {
-            _assetPairRepository = new AssetPairRepository();
+            _assetPairRepository = assetPairRepository;
+            _countryRepository = countryRepository;
+        }
+
+        public Task<IEnumerable<AssetPair>> GetAssetPairsAsync()
+        {
+            return StateManager.GetStateAsync<IEnumerable<AssetPair>>("AssetPairs");
+        }
+
+        public async Task<IEnumerable<CountryItem>> GetCountriesAsync(string language)
+        {
+            return await _countryRepository.GetAllAsync(language);
         }
 
         protected override async Task OnActivateAsync()
@@ -24,14 +37,7 @@ namespace DictionaryService
 
             var assetPairs = await _assetPairRepository.GetAllAssetPairsAsync();
 
-            await this.StateManager.TryAddStateAsync("AssetPairs", assetPairs);
-
-            return;
-        }
-
-        public Task<IEnumerable<AssetPair>> GetAssetPairsAsync()
-        {
-            return this.StateManager.GetStateAsync<IEnumerable<AssetPair>>("AssetPairs");
+            await StateManager.TryAddStateAsync("AssetPairs", assetPairs);
         }
     }
 }
