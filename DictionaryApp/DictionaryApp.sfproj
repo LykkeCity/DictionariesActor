@@ -27,7 +27,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DictionaryService\DictionaryService.csproj" />
+    <ProjectReference Include="..\DictionaryService\DictionaryService.Actor.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <PropertyGroup>
