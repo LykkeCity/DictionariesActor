@@ -1,5 +1,8 @@
 version: 1.0.{build}
 configuration: Release
+platform: x64
+init:
+- ps: Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force -Scope CurrentUser
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -7,11 +10,15 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 install:
-- Webpicmd /install /products:"MicrosoftAzure-ServiceFabric" /AcceptEULA
+- ps: >-
+    Webpicmd /install /products:"MicrosoftAzure-ServiceFabric-VS2015-2_1" /AcceptEULA
+
+
+    $env:PATH="C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;$env:PATH";
 before_build:
 - ps: nuget restore $env:APPVEYOR_BUILD_FOLDER\DictionaryApp.sln
 build:
   project: DictionaryApp.sln
   verbosity: minimal
-deploy_script:
-- ps: Connect-ServiceFabricCluster
+after_build:
+- ps: msbuild DictionaryApp\DictionaryApp.sfproj /t:Package /p:Configuration=Release /p:PlatformTarget=x64
