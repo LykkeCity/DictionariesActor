@@ -5,7 +5,7 @@ using Lykke.Core.Domain.Assets.Models;
 
 namespace DictionaryService.DataAccess.Asset
 {
-    public class AssetPairRepository : IAssetPairRepository
+    public class MarginalAssetPairRepository : IAssetPairRepository
     {
         public Task<IEnumerable<AssetPair>> GetAllAsync()
         {

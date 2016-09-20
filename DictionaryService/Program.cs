@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using DictionaryService.DataAccess.Asset;
+using DictionaryService.DataAccess.Asset.MarginTrading;
 using DictionaryService.DataAccess.Country;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
@@ -15,7 +16,10 @@ namespace DictionaryService
                 ActorRuntime.RegisterActorAsync<DictionaryService>(
                         (context, actorType) =>
                             new ActorService(context, actorType,
-                                () => new DictionaryService(new AssetPairRepository(), new CountryRepository())))
+                                () =>
+                                    new DictionaryService(new AssetPairRepository(), new CountryRepository(),
+                                        new MarginalAssetPairRepository(), new MarginalIssuerRepository(),
+                                        new MarginalAssetRepository())))
                     .GetAwaiter()
                     .GetResult();
 
